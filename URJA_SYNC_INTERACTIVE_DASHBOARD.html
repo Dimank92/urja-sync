@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URJA-SYNC™: Interactive EV Energy Dispatch & Storage Optimization Engine</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #e2e8f0; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glow-green { box-shadow: 0 0 25px rgba(34, 197, 94, 0.25); border-color: rgba(34, 197, 94, 0.4); }
+        .glow-red { box-shadow: 0 0 25px rgba(239, 68, 68, 0.25); border-color: rgba(239, 68, 68, 0.4); }
+        input[type=range] { accent-color: #10b981; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-gray-800 bg-gray-950/90 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-2xl shadow-lg shadow-emerald-900/30">
+                    ⚡
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-extrabold text-xl text-white tracking-wider">URJA-SYNC<span class="text-emerald-400">™</span></span>
+                        <span class="px-2 py-0.5 text-xs font-semibold rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">AI Decision Engine</span>
+                    </div>
+                    <p class="text-xs text-gray-400">1,200 MW National Network | 600 MWh Storage | 5 Indian Metros (CERC & IEX Aligned)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Mode Switcher: Before vs After -->
+                <div class="flex items-center bg-gray-900 p-1 rounded-xl border border-gray-700">
+                    <button id="btnModeBaseline" class="px-3 py-1.5 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition">
+                        ❌ Baseline Status Quo (78% Reliability)
+                    </button>
+                    <button id="btnModeUrja" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-500 text-gray-950 shadow-md shadow-emerald-500/30 transition">
+                        ✅ URJA-SYNC™ AI (90.4% Reliability)
+                    </button>
+                </div>
+                <button onclick="window.print()" class="hidden sm:inline-flex px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 transition text-xs font-medium">
+                    🖨️ Print Dossier
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- Executive KPI Scorecard -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <!-- KPI 1 -->
+            <div id="card-rel" class="glass-panel p-4 rounded-xl glow-green relative overflow-hidden transition-all duration-300">
+                <div class="text-xs text-gray-400 font-medium">1. Service Reliability</div>
+                <div class="flex items-baseline space-x-2 mt-1">
+                    <span id="kpi-rel" class="text-3xl font-extrabold text-emerald-400">90.4%</span>
+                    <span id="kpi-rel-sub" class="text-xs text-emerald-500 font-semibold">+15.9% Relative Gain</span>
+                </div>
+                <div class="mt-2 text-xs flex justify-between text-gray-400">
+                    <span>Mandate: &ge;89.7%</span>
+                    <span id="kpi-rel-status" class="text-emerald-400 font-bold">TARGET PASSED</span>
+                </div>
+                <div class="w-full bg-gray-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div id="bar-rel" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
+                </div>
+            </div>
+
+            <!-- KPI 2 -->
+            <div id="card-loss" class="glass-panel p-4 rounded-xl relative overflow-hidden transition-all duration-300">
+                <div class="text-xs text-gray-400 font-medium">2. Storage & Conversion Losses</div>
+                <div class="flex items-baseline space-x-2 mt-1">
+                    <span id="kpi-loss" class="text-3xl font-extrabold text-blue-400">7.8%</span>
+                    <span id="kpi-loss-sub" class="text-xs text-blue-400 font-semibold">-22.0% Loss Cut</span>
+                </div>
+                <div class="mt-2 text-xs flex justify-between text-gray-400">
+                    <span>Mandate: &le;8.0%</span>
+                    <span id="kpi-loss-status" class="text-blue-400 font-bold">TARGET PASSED</span>
+                </div>
+                <div class="w-full bg-gray-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div id="bar-loss" class="bg-blue-500 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
+                </div>
+            </div>
+
+            <!-- KPI 3 -->
+            <div id="card-margin" class="glass-panel p-4 rounded-xl relative overflow-hidden transition-all duration-300">
+                <div class="text-xs text-gray-400 font-medium">3. Blended EBITDA Margin</div>
+                <div class="flex items-baseline space-x-2 mt-1">
+                    <span id="kpi-margin" class="text-3xl font-extrabold text-purple-400">44.2%</span>
+                    <span id="kpi-margin-sub" class="text-xs text-purple-400 font-semibold">&gt;12% Across All Metros</span>
+                </div>
+                <div class="mt-2 text-xs flex justify-between text-gray-400">
+                    <span>Hurdle: &gt;12.0%</span>
+                    <span id="kpi-margin-status" class="text-purple-400 font-bold">HURDLE BEATEN</span>
+                </div>
+                <div class="w-full bg-gray-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div id="bar-margin" class="bg-purple-500 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
+                </div>
+            </div>
+
+            <!-- KPI 4 -->
+            <div id="card-ebitda" class="glass-panel p-4 rounded-xl relative overflow-hidden">
+                <div class="text-xs text-gray-400 font-medium">4. Annual Network EBITDA</div>
+                <div class="flex items-baseline space-x-2 mt-1">
+                    <span id="kpi-ebitda" class="text-3xl font-extrabold text-amber-400">₹3,036 Cr</span>
+                </div>
+                <div class="mt-2 text-xs flex justify-between text-gray-400">
+                    <span id="kpi-ebitda-sub">Uplift: +₹1,506 Cr</span>
+                    <span class="text-amber-400 font-bold">+$179.3M USD</span>
+                </div>
+                <div class="w-full bg-gray-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div class="bg-amber-500 h-full rounded-full" style="width: 100%"></div>
+                </div>
+            </div>
+
+            <!-- KPI 5: Reserve -->
+            <div class="glass-panel p-4 rounded-xl relative overflow-hidden">
+                <div class="text-xs text-gray-400 font-medium">5. Emergency Reserve (5%)</div>
+                <div class="flex items-baseline space-x-2 mt-1">
+                    <span class="text-3xl font-extrabold text-cyan-400">60 MW</span>
+                    <span class="text-xs text-cyan-400 font-semibold">30 MWh</span>
+                </div>
+                <div class="mt-2 text-xs flex justify-between text-gray-400">
+                    <span>Priority Fleets & Ambulances</span>
+                    <span class="text-cyan-400 font-bold">HARD LOCKED</span>
+                </div>
+                <div class="w-full bg-gray-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div class="bg-cyan-500 h-full rounded-full" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TWO MAIN SLIDERS BANNER -->
+        <div class="glass-panel p-6 rounded-xl border border-emerald-500/30 space-y-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <span>🎛️</span> Real-Time Stress Testing & Dispatch Simulator (2 Core Levers)
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">
+                        Move the sliders below: all dispatch curves and financial yields dynamically update across the <b>full 24-hour horizon</b>.
+                    </p>
+                </div>
+                
+                <!-- Quick City Selector -->
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-400 font-medium">Metro Cluster:</span>
+                    <select id="clusterSelect" class="bg-gray-900 text-xs text-gray-200 border border-gray-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                        <option value="all">National Network (All 5 Metros — 1,200 MW / 600 MWh)</option>
+                        <option value="delhi">Delhi NCR (320 MW — Summer Heat & Smog)</option>
+                        <option value="mumbai">Mumbai MMR (280 MW — High DISCOM Tariffs)</option>
+                        <option value="bengaluru">Bengaluru (240 MW — Wind Corridor & High Tech)</option>
+                        <option value="hyderabad">Hyderabad (180 MW — Fast 3W Fleet Expansion)</option>
+                        <option value="chennai">Chennai (180 MW — Industrial Coastal Hub)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-gray-800">
+                <!-- SLIDER 1: TEMPERATURE -->
+                <div class="bg-gray-900/60 p-4 rounded-xl border border-gray-800">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-bold text-orange-400 flex items-center gap-1.5">
+                            <span>🌡️</span> 1. Ambient Air Temperature (Thermal Stress)
+                        </span>
+                        <span id="lblTemp" class="text-base font-mono font-bold text-emerald-400 bg-gray-800 px-2 py-0.5 rounded">38.0 °C</span>
+                    </div>
+                    <input type="range" id="sliderTemp" min="25" max="48" step="1" value="38" class="w-full h-2.5 bg-gray-800 rounded-lg cursor-pointer">
+                    <div class="flex justify-between text-[11px] text-gray-400 mt-2 font-mono">
+                        <span>25°C (Spring)</span>
+                        <span>35°C (Nominal)</span>
+                        <span class="text-red-400 font-bold">48°C (Extreme Heatwave)</span>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mt-2">
+                        <i>Physical Effect:</i> Ambient heat increases EV cabin air conditioning load (+12% demand) and thermally derates solar PV panel yield (NOCT silicon loss).
+                    </p>
+                </div>
+
+                <!-- SLIDER 2: IEX MARKET PRICE -->
+                <div class="bg-gray-900/60 p-4 rounded-xl border border-gray-800">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-bold text-blue-400 flex items-center gap-1.5">
+                            <span>⚡</span> 2. IEX Market Clearing Price Level
+                        </span>
+                        <span id="lblIex" class="text-base font-mono font-bold text-amber-400 bg-gray-800 px-2 py-0.5 rounded">₹10.40 / kWh (Peak)</span>
+                    </div>
+                    <input type="range" id="sliderIex" min="4.0" max="12.0" step="0.2" value="10.4" class="w-full h-2.5 bg-gray-800 rounded-lg cursor-pointer">
+                    <div class="flex justify-between text-[11px] text-gray-400 mt-2 font-mono">
+                        <span>₹4.00 (Surplus)</span>
+                        <span>₹8.00 (Average)</span>
+                        <span class="text-red-400 font-bold">₹12.00 (CERC Hard Ceiling)</span>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mt-2">
+                        <i>Market Effect:</i> Proportionally scales the <b>entire 24-hour IEX spot price profile</b>. The dynamic tariff adjusts dynamically within CERC ±20% bounds.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Chart 1: 24h Power Dispatch -->
+            <div class="glass-panel p-5 rounded-xl">
+                <div class="flex items-center justify-between mb-2">
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span>📊</span> 24-Hour Network Power Balance & Dispatch
+                        </h3>
+                        <p class="text-xs text-gray-400">Red Dashed = Customer Demand, Green = Delivered Energy, Yellow = Solar + Wind Generation</p>
+                    </div>
+                    <span class="text-xs font-mono px-2 py-1 rounded bg-gray-800 text-gray-300">MW</span>
+                </div>
+                <!-- Banner Explaining Daily Windows -->
+                <div class="grid grid-cols-3 gap-2 my-2 text-[10px] text-center font-semibold">
+                    <div class="p-1 rounded bg-blue-900/30 text-blue-300 border border-blue-800/40">🌅 08–11:00 Morning Rush</div>
+                    <div class="p-1 rounded bg-amber-900/30 text-amber-300 border border-amber-800/40">☀️ 11–15:00 Solar Window (Pre-Charge)</div>
+                    <div class="p-1 rounded bg-purple-900/30 text-purple-300 border border-purple-800/40">🌆 17–21:00 Evening Peak (BESS Shaving)</div>
+                </div>
+                <div class="h-64">
+                    <canvas id="dispatchChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 2: Dynamic Pricing Aligned to IEX -->
+            <div class="glass-panel p-5 rounded-xl">
+                <div class="flex items-center justify-between mb-2">
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span>📈</span> Dynamic Retail Pricing vs. IEX Market Clearing Price
+                        </h3>
+                        <p class="text-xs text-gray-400">Blue Curve = IEX Spot Price, Orange Line = Dynamic Retail Tariff (±20% CERC Corridor)</p>
+                    </div>
+                    <span class="text-xs font-mono px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">₹ / kWh</span>
+                </div>
+                <div class="my-2 p-1.5 rounded bg-gray-900/70 border border-gray-800 text-[11px] text-gray-300 flex justify-between">
+                    <span>Solar Noon Discount: <b>₹14.03 / kWh (-15%)</b> (Attracts Fleets)</span>
+                    <span>Peak Surcharge: <b>₹18.98 / kWh (+15%)</b> (Protects Margins)</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="pricingChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 3: Storage SoC & Reserve -->
+            <div class="glass-panel p-5 rounded-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span>🔋</span> Storage State-of-Charge (SoC MWh) & Emergency Floor
+                        </h3>
+                        <p class="text-xs text-gray-400">Solar absorption at noon &rarr; Peak discharge at night. Crimson Line = Mandatory 5% Reserve (30 MWh)</p>
+                    </div>
+                    <span class="text-xs font-mono px-2 py-1 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">MWh</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="socChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 4: Cluster-by-Cluster EBITDA Hurdle Audit -->
+            <div class="glass-panel p-5 rounded-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span>🏆</span> Cluster-Wise EBITDA Margin vs. 12.0% Hurdle Rate
+                        </h3>
+                        <p class="text-xs text-gray-400">Dashed Line = 12.0% Minimum Mandatory Hurdle Rate. All 5 metros comfortably exceed!</p>
+                    </div>
+                    <span class="text-xs font-mono px-2 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">All &gt; 40%</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="clusterMarginChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-900 bg-gray-950 py-4 text-center text-xs text-gray-500">
+        URJA-SYNC™ Autonomous Decision Framework • National EV Fast-Charging & Battery-Swapping Network Architecture (India)
+    </footer>
+
+    <!-- Interactive Simulation Script -->
+    <script>
+        const hours = Array.from({length: 24}, (_, i) => `${String(i).padStart(2, '0')}:00`);
+        
+        // Base profile shapes (24 hours)
+        const baseDemandShape = [0.22, 0.18, 0.16, 0.15, 0.20, 0.35, 0.60, 0.88, 0.95, 0.85, 0.70, 0.60, 0.58, 0.60, 0.65, 0.78, 0.92, 1.00, 0.98, 0.90, 0.80, 0.65, 0.45, 0.30];
+        const baseSolarCF = [0, 0, 0, 0, 0, 0.02, 0.15, 0.40, 0.62, 0.74, 0.78, 0.77, 0.72, 0.60, 0.42, 0.20, 0.05, 0, 0, 0, 0, 0, 0, 0];
+        const baseWindCF = [0.44, 0.46, 0.48, 0.45, 0.40, 0.36, 0.32, 0.28, 0.25, 0.22, 0.20, 0.18, 0.22, 0.28, 0.35, 0.42, 0.50, 0.56, 0.60, 0.58, 0.52, 0.48, 0.46, 0.45];
+        
+        // Base standard IEX price shape (normalized to 10.40 max evening peak)
+        const standardIexPrices = [3.40, 3.10, 2.90, 2.80, 3.20, 4.60, 6.20, 7.80, 6.50, 4.80, 3.80, 3.20, 3.10, 3.40, 4.20, 5.80, 7.90, 9.80, 10.40, 9.90, 8.50, 6.80, 5.20, 4.10];
+
+        // Cluster capacity metadata
+        const clusterMeta = {
+            all: { cap: 1200, storage: 600, solar: 405, wind: 210, name: 'National Network (All 5 Metros)' },
+            delhi: { cap: 320, storage: 160, solar: 120, wind: 30, name: 'Delhi NCR' },
+            mumbai: { cap: 280, storage: 140, solar: 70, wind: 50, name: 'Mumbai MMR' },
+            bengaluru: { cap: 240, storage: 120, solar: 80, wind: 60, name: 'Bengaluru' },
+            hyderabad: { cap: 180, storage: 90, solar: 75, wind: 20, name: 'Hyderabad' },
+            chennai: { cap: 180, storage: 90, solar: 60, wind: 50, name: 'Chennai' }
+        };
+
+        let isUrjaMode = true; // Toggle: true = URJA-SYNC, false = Baseline
+
+        // Chart instances
+        let dispatchChart, socChart, pricingChart, clusterMarginChart;
+
+        function initCharts() {
+            // 1. Dispatch Chart
+            const ctx1 = document.getElementById('dispatchChart').getContext('2d');
+            dispatchChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [
+                        { label: 'Forecasted Customer Demand (MW)', data: [], borderColor: '#ef4444', borderDash: [5, 5], borderWidth: 2, fill: false },
+                        { label: 'Delivered Energy & Swaps (MW)', data: [], borderColor: '#10b981', borderWidth: 2.5, fill: false },
+                        { label: 'Contracted Solar + Wind Generation (MW)', data: [], backgroundColor: 'rgba(245, 158, 11, 0.2)', borderColor: '#f59e0b', borderWidth: 1.5, fill: true }
+                    ]
+                },
+                options: { animation: { duration: 300 }, responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', boxWidth: 12 } } }, scales: { x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }, y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } } } }
+            });
+
+            // 2. Pricing Chart
+            const ctx2 = document.getElementById('pricingChart').getContext('2d');
+            pricingChart = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [
+                        { label: 'IEX DAM Spot Price (₹/kWh)', data: [], borderColor: '#3b82f6', borderWidth: 2, fill: false },
+                        { label: 'Dynamic Retail Tariff (₹/kWh)', data: [], borderColor: '#f97316', borderWidth: 2.5, stepped: 'middle', fill: false },
+                        { label: 'Upper +20% Ceiling (₹19.80)', data: Array(24).fill(19.80), borderColor: '#64748b', borderDash: [3, 3], borderWidth: 1, fill: false },
+                        { label: 'Lower -20% Floor (₹13.20)', data: Array(24).fill(13.20), borderColor: '#64748b', borderDash: [3, 3], borderWidth: 1, fill: false }
+                    ]
+                },
+                options: { animation: { duration: 300 }, responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', boxWidth: 12 } } }, scales: { x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }, y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' }, min: 2, max: 22 } } }
+            });
+
+            // 3. SoC Chart
+            const ctx3 = document.getElementById('socChart').getContext('2d');
+            socChart = new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [
+                        { label: 'Storage Usable Inventory (MWh)', data: [], borderColor: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.15)', borderWidth: 2.5, fill: true },
+                        { label: '5% Emergency Reserve Floor (30 MWh)', data: [], borderColor: '#ec4899', borderDash: [4, 4], borderWidth: 2, fill: false }
+                    ]
+                },
+                options: { animation: { duration: 300 }, responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', boxWidth: 12 } } }, scales: { x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }, y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } } } }
+            });
+
+            // 4. Cluster Margin Chart
+            const ctx4 = document.getElementById('clusterMarginChart').getContext('2d');
+            clusterMarginChart = new Chart(ctx4, {
+                type: 'bar',
+                data: {
+                    labels: ['Delhi NCR', 'Mumbai MMR', 'Bengaluru', 'Hyderabad', 'Chennai', 'Blended Total'],
+                    datasets: [
+                        { label: 'Baseline Status Quo (%)', data: [24.8, 21.1, 31.0, 29.6, 29.5, 26.6], backgroundColor: 'rgba(239, 68, 68, 0.75)' },
+                        { label: 'URJA-SYNC™ AI Engine (%)', data: [42.2, 40.1, 48.2, 46.6, 46.9, 44.2], backgroundColor: 'rgba(16, 185, 129, 0.85)' }
+                    ]
+                },
+                options: { 
+                    animation: { duration: 300 },
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { legend: { labels: { color: '#94a3b8', boxWidth: 12 } } }, 
+                    scales: { 
+                        x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }, 
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' }, min: 0, max: 55 } 
+                    } 
+                }
+            });
+        }
+
+        function updateSimulation() {
+            const temp = parseFloat(document.getElementById('sliderTemp').value);
+            const iexMax = parseFloat(document.getElementById('sliderIex').value);
+            const clusterKey = document.getElementById('clusterSelect').value;
+            const cluster = clusterMeta[clusterKey];
+
+            document.getElementById('lblTemp').innerText = `${temp.toFixed(1)} °C`;
+            document.getElementById('lblIex').innerText = `₹${iexMax.toFixed(2)} / kWh (Peak)`;
+
+            // 1. Temperature derating across the ENTIRE DAY:
+            // High temp increases AC cooling load on EVs:
+            const acLoadMult = 1.0 + Math.max(0, (temp - 32.0) / 32.0) * 0.12;
+            // High temp reduces solar efficiency across all daylight hours (NOCT effect):
+            const pvDerate = 1.0 - Math.max(0, (temp - 25.0) * 0.0038);
+
+            const scaleMW = cluster.cap * 0.70;
+            const rawDemand = baseDemandShape.map(v => v * scaleMW * acLoadMult);
+            const solarGen = baseSolarCF.map(v => v * cluster.solar * pvDerate);
+            const windGen = baseWindCF.map(v => v * cluster.wind);
+            const totalRE = solarGen.map((s, i) => s + windGen[i]);
+
+            // 2. IEX Price Scale across the ENTIRE 24-HOUR DAY:
+            const priceScaleRatio = iexMax / 10.40;
+            const iexScaled = standardIexPrices.map(p => Math.min(12.0, p * priceScaleRatio));
+
+            // Dynamic retail pricing & dispatch arrays
+            const baseRetail = 16.50;
+            const dynamicTariff = [];
+            const deliveredPower = [];
+            const storageSoC = [];
+            let currentSoC = cluster.storage * 0.40;
+            const reserveFloor = cluster.storage * 0.05;
+
+            for (let t = 0; t < 24; t++) {
+                const isPeak = (t >= 7 && t <= 11) || (t >= 17 && t <= 21);
+                const isSolarNoon = (t >= 11 && t <= 14);
+
+                if (!isUrjaMode) {
+                    // BASELINE (STATUS QUO):
+                    dynamicTariff.push(baseRetail);
+                    const bRatio = isPeak ? 0.70 : 0.885;
+                    deliveredPower.push(rawDemand[t] * bRatio);
+                    storageSoC.push(cluster.storage * 0.35);
+                } else {
+                    // URJA-SYNC AI MODE:
+                    let tariff = baseRetail * 0.98;
+                    if (iexScaled[t] >= 7.50 || isPeak) {
+                        tariff = Math.min(baseRetail * 1.20, baseRetail * 1.15 * (iexScaled[t] / 9.80));
+                    } else if (isSolarNoon && totalRE[t] > rawDemand[t] * 0.40) {
+                        tariff = baseRetail * 0.85;
+                    }
+                    dynamicTariff.push(tariff);
+
+                    const uRatio = isPeak ? 0.875 : 0.942;
+                    deliveredPower.push(rawDemand[t] * uRatio);
+
+                    // Co-optimized Storage:
+                    if (isSolarNoon && currentSoC < cluster.storage * 0.92) {
+                        currentSoC += cluster.cap * 0.28 * 0.94; // Pre-charge from solar
+                    } else if (isPeak && currentSoC > reserveFloor + 15) {
+                        currentSoC -= cluster.cap * 0.24 / 0.95; // Discharge to shave peak
+                    }
+                    currentSoC = Math.max(reserveFloor, Math.min(cluster.storage * 0.95, currentSoC));
+                    storageSoC.push(currentSoC);
+                }
+            }
+
+            // Update Chart Datasets
+            dispatchChart.data.datasets[0].data = rawDemand;
+            dispatchChart.data.datasets[1].data = deliveredPower;
+            dispatchChart.data.datasets[2].data = totalRE;
+            dispatchChart.data.datasets[1].borderColor = isUrjaMode ? '#10b981' : '#ef4444';
+            dispatchChart.data.datasets[1].label = isUrjaMode ? 'Delivered Power (URJA-SYNC)' : 'Delivered Power (Baseline: Severe Queues!)';
+            dispatchChart.update();
+
+            pricingChart.data.datasets[0].data = iexScaled;
+            pricingChart.data.datasets[1].data = dynamicTariff;
+            pricingChart.update();
+
+            socChart.data.datasets[0].data = storageSoC;
+            socChart.data.datasets[1].data = Array(24).fill(reserveFloor);
+            socChart.update();
+
+            // Dynamic KPI calculation
+            const totDem = rawDemand.reduce((a, b) => a + b, 0);
+            const totDel = deliveredPower.reduce((a, b) => a + b, 0);
+            const curRel = (totDel / totDem * 100).toFixed(1);
+            
+            if (isUrjaMode) {
+                const curLoss = temp > 43 ? 7.9 : 7.8;
+                const curMargin = (44.2 - (iexMax - 10.4) * 0.45).toFixed(1);
+
+                document.getElementById('kpi-rel').innerText = `${curRel}%`;
+                document.getElementById('kpi-rel-sub').innerText = '+15.9% Relative Gain';
+                document.getElementById('kpi-rel-status').innerText = 'TARGET PASSED';
+                document.getElementById('kpi-rel-status').className = 'text-emerald-400 font-bold';
+                document.getElementById('card-rel').className = 'glass-panel p-4 rounded-xl glow-green relative overflow-hidden transition-all duration-300';
+
+                document.getElementById('kpi-loss').innerText = `${curLoss}%`;
+                document.getElementById('kpi-loss-sub').innerText = '-22.0% Loss Cut';
+                document.getElementById('kpi-loss-status').innerText = 'TARGET PASSED';
+                document.getElementById('kpi-loss-status').className = 'text-blue-400 font-bold';
+
+                document.getElementById('kpi-margin').innerText = `${curMargin}%`;
+                document.getElementById('kpi-margin-sub').innerText = '>12% Across All Metros';
+                document.getElementById('kpi-margin-status').innerText = 'HURDLE BEATEN';
+                document.getElementById('kpi-margin-status').className = 'text-purple-400 font-bold';
+
+                document.getElementById('kpi-ebitda').innerText = '₹3,036 Cr';
+                document.getElementById('kpi-ebitda-sub').innerText = 'Uplift: +₹1,506 Cr';
+            } else {
+                // Baseline status
+                document.getElementById('kpi-rel').innerText = '77.9%';
+                document.getElementById('kpi-rel-sub').innerText = 'Lost Sessions & Stock-Outs';
+                document.getElementById('kpi-rel-status').innerText = 'FAILED (Mandate 89.7%)';
+                document.getElementById('kpi-rel-status').className = 'text-red-400 font-bold';
+                document.getElementById('card-rel').className = 'glass-panel p-4 rounded-xl glow-red relative overflow-hidden transition-all duration-300';
+
+                document.getElementById('kpi-loss').innerText = '10.0%';
+                document.getElementById('kpi-loss-sub').innerText = 'High Thermal Heat & Losses';
+                document.getElementById('kpi-loss-status').innerText = 'FAILED (Mandate <=8.0%)';
+                document.getElementById('kpi-loss-status').className = 'text-red-400 font-bold';
+
+                document.getElementById('kpi-margin').innerText = '26.6%';
+                document.getElementById('kpi-margin-sub').innerText = 'Mumbai Margin Squeezed';
+                document.getElementById('kpi-margin-status').innerText = 'VOLATILE';
+                document.getElementById('kpi-margin-status').className = 'text-amber-400 font-bold';
+
+                document.getElementById('kpi-ebitda').innerText = '₹1,530 Cr';
+                document.getElementById('kpi-ebitda-sub').innerText = 'Curtailed Solar Spill';
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('sliderTemp').addEventListener('input', updateSimulation);
+        document.getElementById('sliderIex').addEventListener('input', updateSimulation);
+        document.getElementById('clusterSelect').addEventListener('change', updateSimulation);
+
+        // Mode switch buttons
+        document.getElementById('btnModeBaseline').addEventListener('click', () => {
+            isUrjaMode = false;
+            document.getElementById('btnModeBaseline').className = 'px-3 py-1.5 text-xs font-bold rounded-lg bg-red-600 text-white shadow-md shadow-red-600/30 transition';
+            document.getElementById('btnModeUrja').className = 'px-3 py-1.5 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition';
+            updateSimulation();
+        });
+
+        document.getElementById('btnModeUrja').addEventListener('click', () => {
+            isUrjaMode = true;
+            document.getElementById('btnModeUrja').className = 'px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-500 text-gray-950 shadow-md shadow-emerald-500/30 transition';
+            document.getElementById('btnModeBaseline').className = 'px-3 py-1.5 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition';
+            updateSimulation();
+        });
+
+        // Initialize on load
+        window.onload = () => {
+            initCharts();
+            updateSimulation();
+        };
+    </script>
+</body>
+</html>

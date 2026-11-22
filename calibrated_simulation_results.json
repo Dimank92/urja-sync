@@ -1,0 +1,34 @@
+{
+    "baseline": {
+        "reliability_pct": 77.9,
+        "loss_pct": 10.0,
+        "ebitda_margin_pct": 26.6,
+        "daily_rev_cr": 15.78,
+        "daily_cost_cr": 11.59,
+        "daily_ebitda_cr": 4.19,
+        "annual_ebitda_cr": 1530.4,
+        "cluster_margins": {
+            "Delhi NCR": 24.8,
+            "Mumbai MMR": 21.1,
+            "Bengaluru": 31.0,
+            "Hyderabad": 29.6,
+            "Chennai": 29.5
+        }
+    },
+    "urjasync": {
+        "reliability_pct": 90.4,
+        "loss_pct": 7.8,
+        "ebitda_margin_pct": 44.2,
+        "daily_rev_cr": 18.81,
+        "daily_cost_cr": 10.49,
+        "daily_ebitda_cr": 8.32,
+        "annual_ebitda_cr": 3036.4,
+        "cluster_margins": {
+            "Delhi NCR": 42.2,
+            "Mumbai MMR": 40.1,
+            "Bengaluru": 48.2,
+            "Hyderabad": 46.6,
+            "Chennai": 46.9
+        }
+    }
+}

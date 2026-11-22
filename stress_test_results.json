@@ -1,0 +1,97 @@
+[
+    {
+        "scenario": "S1: Baseline (Normal Spring)",
+        "description": "Normal operational conditions (P50 day)",
+        "reliability_pct": 90.4,
+        "loss_pct": 7.8,
+        "ebitda_margin_pct": 44.0,
+        "daily_ebitda_cr": 8.09,
+        "annual_ebitda_cr": 2952.8,
+        "cluster_margins": {
+            "Delhi NCR": 42.7,
+            "Mumbai MMR": 41.8,
+            "Bengaluru": 46.7,
+            "Hyderabad": 44.6,
+            "Chennai": 45.8
+        },
+        "hurdle_12pct_met": true,
+        "reliability_target_met": true,
+        "loss_target_met": true
+    },
+    {
+        "scenario": "S2: Severe Summer Heatwave",
+        "description": "May-June peak summer: 47\u00b0C heatwave in Delhi & Chennai",
+        "reliability_pct": 90.0,
+        "loss_pct": 7.9,
+        "ebitda_margin_pct": 44.5,
+        "daily_ebitda_cr": 9.58,
+        "annual_ebitda_cr": 3496.7,
+        "cluster_margins": {
+            "Delhi NCR": 43.2,
+            "Mumbai MMR": 42.5,
+            "Bengaluru": 47.2,
+            "Hyderabad": 45.3,
+            "Chennai": 45.9
+        },
+        "hurdle_12pct_met": true,
+        "reliability_target_met": true,
+        "loss_target_met": true
+    },
+    {
+        "scenario": "S3: Monsoon RE Lull",
+        "description": "Extended monsoon lull: severe renewable drought",
+        "reliability_pct": 90.4,
+        "loss_pct": 7.8,
+        "ebitda_margin_pct": 44.2,
+        "daily_ebitda_cr": 8.49,
+        "annual_ebitda_cr": 3098.8,
+        "cluster_margins": {
+            "Delhi NCR": 43.0,
+            "Mumbai MMR": 41.2,
+            "Bengaluru": 47.1,
+            "Hyderabad": 45.4,
+            "Chennai": 45.8
+        },
+        "hurdle_12pct_met": true,
+        "reliability_target_met": true,
+        "loss_target_met": true
+    },
+    {
+        "scenario": "S4: IEX Market Price Shock",
+        "description": "Peak power deficit: IEX spot prices hit regulatory cap",
+        "reliability_pct": 90.4,
+        "loss_pct": 7.8,
+        "ebitda_margin_pct": 45.9,
+        "daily_ebitda_cr": 8.99,
+        "annual_ebitda_cr": 3281.3,
+        "cluster_margins": {
+            "Delhi NCR": 44.4,
+            "Mumbai MMR": 42.6,
+            "Bengaluru": 49.3,
+            "Hyderabad": 46.9,
+            "Chennai": 48.2
+        },
+        "hurdle_12pct_met": true,
+        "reliability_target_met": true,
+        "loss_target_met": true
+    },
+    {
+        "scenario": "S5: Compound Black Swan",
+        "description": "Simultaneous heatwave, renewable drop, and market price surge",
+        "reliability_pct": 89.9,
+        "loss_pct": 7.9,
+        "ebitda_margin_pct": 44.5,
+        "daily_ebitda_cr": 9.76,
+        "annual_ebitda_cr": 3562.4,
+        "cluster_margins": {
+            "Delhi NCR": 43.3,
+            "Mumbai MMR": 41.4,
+            "Bengaluru": 47.7,
+            "Hyderabad": 45.4,
+            "Chennai": 46.3
+        },
+        "hurdle_12pct_met": true,
+        "reliability_target_met": true,
+        "loss_target_met": true
+    }
+]
