@@ -1,7 +1,7 @@
 # URJA-SYNC™: Unified Real-Time Judicial Allocation, Dynamic Pricing & Storage Optimization Engine
 ## End-to-End Quantitative Framework for National EV Fast-Charging & Battery-Swapping Infrastructure
 
-**Case Study Author / Hackathon Submission** 
+**Technical Case Study Benchmark Specification** 
 **Target Architecture**: 1,200 MW Combined Capacity | 600 MWh Storage | 5 Indian Metros (Delhi NCR, Mumbai MMR, Bengaluru, Hyderabad, Chennai) 
 **Regulatory & Market Alignment**: CERC Day-Ahead Market (DAM), Real-Time Market (RTM), Green Open Access Rules 2022, Deviation Settlement Mechanism (DSM) 
 

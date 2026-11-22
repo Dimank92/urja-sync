@@ -1,6 +1,6 @@
 # URJA-SYNC™: Jury Defense & Q&A Grilling Guide
 ## Master Cheat-Sheet for Live Presentation & C-Level / Technical Jury Grilling
-*Regional Institute Hackathon • Case Study: 1,200 MW / 600 MWh EV Network in India*
+*Technical Evaluation • Case Study: 1,200 MW / 600 MWh EV Network in India*
 
 ---
 
@@ -75,7 +75,7 @@
 
 ---
 
-#### Q10: "If the hackathon ends today, what is the immediate 90-day execution plan?"
+#### Q10: "Following evaluation sign-off, what is the immediate 90-day execution plan?"
 > **Winning Answer**:
 > *"Day 1 to 30: Connect OCPP 2.0.1 telematics and BMS CAN-bus streams from our flagship Delhi and Bengaluru hubs into our cloud forecasting pipeline.
 > Day 31 to 60: Run our S-MPC optimizer in 'shadow mode' against real IEX DAM clearing prices without controlling physical chargers, validating forecast accuracy.

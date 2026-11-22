@@ -1,6 +1,6 @@
 """
 URJA-SYNC Test Suite: Core Case Study KPI Targets & Convergence Verification
-Validates 100% convergence against all three Hackathon Mandates:
+Validates 100% convergence against all three Technical Mandates:
  - Target 1: Service Reliability from 78.0% to >= 89.7% (~90.0%)
  - Target 2: Storage & Conversion Losses reduced by 20% (10.0% down to <= 8.0%)
  - Target 3: EBITDA Margins strictly sustained > 12.0% across ALL 5 metro clusters

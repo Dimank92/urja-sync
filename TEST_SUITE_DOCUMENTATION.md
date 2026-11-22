@@ -1,7 +1,7 @@
 # URJA-SYNC™: Comprehensive Verification & Python Test Suite
 ## 100% Mathematical Convergence & Regulatory Constraint Validation
 
-**Hackathon Project**: National EV Fast-Charging & Battery-Swapping Optimization (India Metros)  
+**Project**: National EV Fast-Charging & Battery-Swapping Optimization (India Metros)  
 **Verification Framework**: Pytest 9.1+ / Python 3.14  
 **Coverage**: 60 Automated Unit, Functional, Invariant, and Stress-Resilience Tests across 7 Domains  
 **Execution Command**: `python run_all_tests.py` or `pytest`

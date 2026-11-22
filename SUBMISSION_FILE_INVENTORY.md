@@ -1,7 +1,7 @@
 # URJA-SYNC: Submission Package File Inventory
 
 ### Package Archive
-- **URJA_SYNC_HACKATHON_PACKAGE.zip** (2.3 MB)
+- **URJA_SYNC_SUBMISSION_PACKAGE.zip** (2.3 MB)
   Complete offline submission bundle containing all source code, trained neural network weights, reports, interactive dashboard, and 300-DPI charts.
 
 ---
@@ -34,7 +34,7 @@
 
 7. **URJA_SYNC_COMPREHENSIVE_REPORT.pdf**
    - **Role:** Official 7-page technical report and executive briefing.
-   - **Description:** Formatted with ReportLab to institutional standards. Contains complete mathematical formulations, dispatch tables, EBITDA breakdown, 4 high-resolution exhibits, and live repository links in the footer with zero competitor/team identifiers.
+   - **Description:** Formatted with ReportLab to institutional standards. Contains complete mathematical formulations, dispatch tables, EBITDA breakdown, 4 high-resolution exhibits, and live repository links in the footer with zero organizational or identifying labels.
 
 8. **URJA_SYNC_INTERACTIVE_DASHBOARD.html**
    - **Role:** Interactive browser-based operations simulator.

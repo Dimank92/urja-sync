@@ -182,7 +182,7 @@ def build_pdf(filename="URJA_SYNC_COMPREHENSIVE_REPORT.pdf"):
     # PAGE 1: TITLE, METADATA & EXECUTIVE AUDIT
     # =========================================================================
     badge_table = Table(
-        [[Paragraph("<font color='#0D9488'><b>EXECUTIVE CASE STUDY DOSSIER</b></font> | <b>REGIONAL INSTITUTE HACKATHON 2026</b>", table_cell_bold)]],
+        [[Paragraph("<font color='#0D9488'><b>EXECUTIVE TECHNICAL DOSSIER</b></font> | <b>ENTERPRISE ENERGY OPTIMIZATION BENCHMARK</b>", table_cell_bold)]],
         colWidths=[486]
     )
     badge_table.setStyle(TableStyle([

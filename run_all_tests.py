@@ -1,7 +1,7 @@
 """
 URJA-SYNC Automated Test Runner & Verification Suite
 Executes the full test suite across all 7 testing domains, verifies 100% compliance
-with Hackathon Case Study Mandates, and outputs a structured execution report.
+with Technical Case Study Mandates, and outputs a structured execution report.
 """
 
 import sys
@@ -21,7 +21,7 @@ def run_tests():
     tests_dir = os.path.join(project_dir, 'tests')
     
     print("\n" + "="*85)
-    print(" " * 15 + "URJA-SYNC NATIONAL HACKATHON TEST SUITE RUNNER")
+    print(" " * 15 + "URJA-SYNC NATIONAL OPTIMIZATION TEST SUITE RUNNER")
     print(" " * 12 + "100% Verification of Case Study Quantitative Constraints & KPIs")
     print("="*85)
     print(f"Target Directory : {project_dir}")

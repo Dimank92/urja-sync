@@ -1,7 +1,7 @@
 # URJA-SYNC™: Executive Pitch Deck (Slide-by-Slide)
 ## AI-Powered Regional Energy Allocation & Storage Optimization for India's 1,200 MW EV Network
 
-*Ready-to-Present Format for Hackathon Jury & Executive Leadership* 
+*Executive Presentation for Technical Evaluation & Industry Leadership* 
 *Total Presentation Time: 8-10 Minutes*
 
 ---
@@ -10,7 +10,7 @@
 
 **Title**: **URJA-SYNC™ (Urja Real-time Judicial Allocation & Storage Yield Network)** 
 **Subtitle**: AI-Powered Energy Allocation, Storage Dispatch & Dynamic Pricing for India's Largest EV Network 
-**Presenters**: The Winning Hackathon Team 
+**Specification**: URJA-SYNC Enterprise Technical Benchmark 
 **Scale**: 1,200 MW Combined Capacity (720 MW Fast DC, 480 MW Swapping) | 600 MWh Storage | 5 Metros 
 
 > **Executive Soundbite**: 
