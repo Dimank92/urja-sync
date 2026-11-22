@@ -87,16 +87,36 @@ Scikit-Learn Gradient Boosting Benchmark:
 ## 4. Quickstart: Installation & Execution
 
 ### Prerequisites
-Install Python 3.10+ and required packages:
+Install Python 3.10+ and required dependencies:
 ```bash
-pip install torch scikit-learn numpy pandas scipy matplotlib reportlab pypdf
+pip install -r requirements.txt
 ```
 
-### 1. Train the AI/ML Forecaster
+### 1. Run Unified Dual AI/ML Suite (Recommended)
+Executes both empirical deep learning training and domain physics architecture validation:
 ```bash
-python ai_ml_pipeline.py
+python run_all_ml.py
 ```
-Outputs training loss per epoch, evaluates out-of-sample test metrics, saves weights to `urja_sync_tft_model.pt`, and generates `model_training_metrics.png`.
+
+### 2. Run Individual ML Engines
+- **Empirical Training Pipeline (BiLSTM-GLU & Quantile Regression):**
+  ```bash
+  python ai_ml_pipeline.py
+  ```
+- **Domain-Informed Structural Architecture (GNN, IEX Cap, Battery PINN, Bandit):**
+  ```bash
+  python urja_sync_ai_models.py
+  ```
+
+### 3. Run Physical & Financial Dispatch Simulation
+```bash
+python urja_sync_simulation.py
+```
+
+### 4. Run Black-Swan Stress Scenarios
+```bash
+python urja_sync_stress_scenarios.py
+```
 
 ### 2. Run the 24-Hour Network Simulation
 ```bash

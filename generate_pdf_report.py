@@ -57,10 +57,11 @@ class NumberedCanvas(canvas.Canvas):
         self.setLineWidth(0.5)
         self.line(54, 45, 540, 45)
         
-        self.setFont("Helvetica", 8)
-        self.setFillColor(colors.HexColor("#64748B"))
-        self.drawString(54, 34, "CONFIDENTIAL AND PROPRIETARY - HACKATHON CASE STUDY SUBMISSION")
         self.setFont("Helvetica-Bold", 8)
+        self.setFillColor(colors.HexColor("#0D9488"))
+        self.drawString(54, 34, "LIVE CODEBASE & REPOSITORY: https://github.com/Dimank92/urja-sync")
+        self.setFont("Helvetica-Bold", 8)
+        self.setFillColor(colors.HexColor("#64748B"))
         self.drawRightString(540, 34, f"Page {self._pageNumber} of {page_count}")
         self.restoreState()
 
@@ -199,7 +200,8 @@ def build_pdf(filename="URJA_SYNC_COMPREHENSIVE_REPORT.pdf"):
     
     meta_p = Paragraph(
         "<b>Metro Clusters:</b> Delhi NCR (320 MW), Mumbai MMR (280 MW), Bengaluru (240 MW), Hyderabad (180 MW), Chennai (180 MW)<br/>"
-        "<b>Market Context:</b> IEX Day-Ahead (DAM), Real-Time (RTM), Green Open Access Rules 2022, DSM Regulations | <b>Currency:</b> INR",
+        "<b>Market Context:</b> IEX Day-Ahead (DAM), Real-Time (RTM), Green Open Access Rules 2022, DSM Regulations | <b>Currency:</b> INR<br/>"
+        "<b>Live Codebase & Interactive Models:</b> <font color='#0D9488'><b>https://github.com/Dimank92/urja-sync</b></font>",
         body_style
     )
     story.append(meta_p)
@@ -701,7 +703,7 @@ def build_pdf(filename="URJA_SYNC_COMPREHENSIVE_REPORT.pdf"):
 
     signoff_table = Table(
         [[
-            Paragraph("<b>SUBMITTED BY:</b> Hackathon Competitor Team<br/><b>SOLUTION:</b> URJA-SYNC v2.4 Enterprise<br/><b>STATUS:</b> All 3 Executive Targets Formally Passed", table_cell),
+            Paragraph("<b>LIVE CODEBASE & REPOSITORY:</b><br/><font color='#0D9488'><b>https://github.com/Dimank92/urja-sync</b></font><br/><b>SPECIFICATION:</b> URJA-SYNC Technical Benchmark<br/><b>EVALUATION:</b> All 3 Executive Targets Formally Passed", table_cell),
             Paragraph("<b>AUDIT VERIFICATION:</b><br/>• Reliability: <b>90.4%</b> (Goal 89.7%) [PASS]<br/>• Losses: <b>7.8%</b> (Goal <= 8.0%) [PASS]<br/>• EBITDA: <b>44.2%</b> (Goal > 12.0%) [PASS]", table_cell_bold)
         ]],
         colWidths=[243, 243]
